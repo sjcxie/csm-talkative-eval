@@ -128,6 +128,6 @@ else:
         # Stream the response to the chat using `st.write_stream`, then store it in 
         # session state.
         with st.chat_message("assistant"):
-            response = st.write("Unadapted response: ", unada_bot_response)
-            response = st.write("Adapted response: ", ada_response)
+            response = st.write("**Unadapted response**: ", unada_bot_response)
+            response = st.write("**Adapted response**: ", ada_response)
         st.session_state.messages.append({"role": "assistant", "content": unada_bot_response})
