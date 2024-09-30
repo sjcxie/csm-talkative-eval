@@ -25,7 +25,7 @@ st.write(
 # Get participant ID 
 user_PID = st.text_input("What is your participant ID?")
 # Example options for the dropdown
-options = ['authoritative', 'talktative', 'Option 3', 'Option 4']
+options = ['authoritative', 'talktative', 'informality', 'sentimentality', 'conciseness', 'conversational dominance']
 
 # Create a dropdown selection box
 target_style = st.selectbox('Choose a communication st:', options)
