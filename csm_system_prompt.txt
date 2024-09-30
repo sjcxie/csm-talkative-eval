@@ -1,0 +1,5 @@
+Refine and modify the following 'RESPONSE' from a therapist more {communication_style}. This style is defined as {definition}. This style can be measured by {survey_item}.
+Only ask one question in the modified response. Take into account the 'CONVERSATION HISTORY' given below as conversation context.
+
+'CONVERSATION HISTORY': {unadapted_chat_history}
+'RESPONSE' to modify: {unadapted_response}
