@@ -24,6 +24,7 @@ st.write(
 
 # Get participant ID 
 user_PID = st.text_input("What is your participant ID?")
+
 # Example options for the dropdown
 options = ['authoritative', 'talktative', 'informality', 'sentimentality', 'conciseness', 'conversational dominance']
 
@@ -41,7 +42,8 @@ if not openai_api_key:
 else:
 
     # Create an OpenAI client.
-    llm = ChatOpenAI(model="gpt-4o-mini", api_key=openai_api_key)
+    # llm = ChatOpenAI(model="gpt-4o-mini", api_key=openai_api_key)
+    llm = ChatOpenAI(model="gpt-4o", api_key=openai_api_key)
 
     # Load prompts
     file_path = 'therapyagent_system_prompt.txt'
