@@ -16,7 +16,8 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.schema import AIMessage, HumanMessage
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 
-from gcloud import storage
+# from gcloud import storage
+from google.cloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
 
 from models import MODEL_CONFIGS
