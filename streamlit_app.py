@@ -85,8 +85,10 @@ else:
     # automatically at the bottom of the page.
     if user_input := st.chat_input("Enter your input here."):
 
-        if user_input=="SAVE" or user_input=="save" or user_input=="STOP" or user_input=="stop" or user_input =="stop" or user_input=="STOP":
-            file_name = "{style}_P{PID}.csv".format(style=target_styles[style_id], PID=user_PID)
+        if st.button("Finish the conversation"):
+            #  or user_input=="SAVE" or user_input=="save" or user_input=="STOP" or user_input=="stop" or user_input =="stop" or user_input=="STOP"
+            # file_name = "{style}_P{PID}.csv".format(style=target_styles[style_id], PID=user_PID)
+            file_name = "lalala"
             st.write("file name is "+file_name)
             
             chat_history_df.to_csv(file_name, index=False)
