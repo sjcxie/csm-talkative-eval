@@ -16,9 +16,11 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.schema import AIMessage, HumanMessage
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 
-# from gcloud import storage
-from google.cloud import storage
+from gcloud import storage
+# from google.cloud import storage
 from oauth2client.service_account import ServiceAccountCredentials
+# from google.oauth2.service_account import Credentials
+
 
 from models import MODEL_CONFIGS
 from utils.prompt_utils import target_styles, definitions, survey_items
@@ -101,6 +103,9 @@ else:
             credentials = ServiceAccountCredentials.from_json_keyfile_dict(
                 credentials_dict
             )
+            # credentials = Credentials.from_service_account_info(
+            #     credentials_dict
+            # )
             client = storage.Client(credentials=credentials, project='galvanic-fort-430920-e8')
             bucket = client.get_bucket('streamlit-bucket-bot-eval')
             blob = bucket.blob(file_name)

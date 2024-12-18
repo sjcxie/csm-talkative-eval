@@ -7,5 +7,5 @@ openpyxl
 
 # gcsfs==2024.6.1
 # st-files-connection
-# gcloud
-google-cloud-storage
+gcloud
+# google-cloud-storage
