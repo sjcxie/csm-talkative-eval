@@ -32,7 +32,7 @@ st.title(" Therapist Chatbot Evaluation 👋")
 # Get participant ID 
 user_PID = st.text_input("What is your participant ID?")
 
-style_id = 0
+style_id = 1
 
 
 # Create a dropdown selection box
