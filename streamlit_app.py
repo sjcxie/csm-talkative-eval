@@ -2,7 +2,7 @@ import streamlit as st
 from openai import OpenAI
 import pandas as pd
 import os
-import utils
+import utils.prompt_utils as prompt_utils
 import openpyxl
 
 from langchain_community.chat_models import ChatOpenAI
@@ -16,23 +16,24 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain.schema import AIMessage, HumanMessage
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 
+from models import MODEL_CONFIGS
+from utils.prompt_utils import target_styles, definitions, survey_items
+from utils.utils import response_generator
+
 # Show title and description.
-st.title("💬 Testing Chatbot")
-st.write(
-    "This is a chatbot that uses OpenAI's GPT-4o model to generate responses. "
-)
+st.title(" Therapist Chatbot Evaluation 👋")
 
 # Get participant ID 
 user_PID = st.text_input("What is your participant ID?")
 
-# Example options for the dropdown
-options = ['authoritative', 'talktative', 'informality', 'sentimentality', 'conciseness', 'conversational dominance']
+style_id = 0
+
 
 # Create a dropdown selection box
-target_style = st.selectbox('Choose a communication st:', options)
+# target_style = st.selectbox('Choose a communication st:', styles)
 
 # Display the selected option
-st.write(f'You selected: {target_style}')
+# st.write(f'You selected: {target_style}')
 
 # Retrieve api key from secrets
 openai_api_key = st.secrets["OPENAI_API_KEY"]
@@ -45,24 +46,17 @@ else:
     # llm = ChatOpenAI(model="gpt-4o-mini", api_key=openai_api_key)
     llm = ChatOpenAI(model="gpt-4o", api_key=openai_api_key)
 
-    # Load prompts
-    file_path = 'therapyagent_system_prompt.txt'
-    with open(file_path, 'r') as file:
-        system_prompt_text = file.read()
-    file_path = 'csm_system_prompt.txt'
-    with open(file_path, 'r') as file:
-        csm_prompt_text = file.read()
-
-    # Therapy agent prompt 
+    # therapist agent
+    therapist_model_config = MODEL_CONFIGS['Therapist']
     therapyagent_prompt_template = ChatPromptTemplate.from_messages([
-        ("system", system_prompt_text),
+        ("system", therapist_model_config['prompt']),
         MessagesPlaceholder(variable_name="history"), # dynamic insertion of past conversation history
         ("human", "{input}"),
     ])
-
     # Communication style modifier prompt
+    modifier_model_config = MODEL_CONFIGS['Modifier']
     csm_prompt_template = PromptTemplate(
-        variables=["communication_style", "chat_history", "unadapted_response"], template=csm_prompt_text
+        variables=["communication_style", "chat_history", "unadapted_response"], template=modifier_model_config['prompt']
     )
 
     # set up streamlit history memory
@@ -115,12 +109,9 @@ else:
         unada_response = therapy_chain_with_history.invoke({"input": user_input}, config)
         unada_bot_response = unada_response.content
 
-
-        # input target style dictionary
-        style_dict = pd.read_excel("style_dict.xlsx", header=0, sheet_name=0)
-        selected_style_row = style_dict[style_dict['style']==target_style]
-        definition = selected_style_row['definition']
-        survey_item = selected_style_row['survey_item']
+        target_style = target_styles[style_id]
+        definition = definitions[style_id]
+        survey_item = survey_items[style_id]
         ada_response = csmagent_chain.predict(communication_style=target_style,
                                             definition=definition,
                                             survey_item=survey_item,
@@ -130,6 +121,6 @@ else:
         # Stream the response to the chat using `st.write_stream`, then store it in 
         # session state.
         with st.chat_message("assistant"):
-            response = st.write("**Unadapted response**: ", unada_bot_response)
-            response = st.write("**Adapted response**: ", ada_response)
+            response = st.write_stream(response_generator(response = unada_bot_response))
+            response = st.write_stream(response_generator(response = ada_response))
         st.session_state.messages.append({"role": "assistant", "content": unada_bot_response})
