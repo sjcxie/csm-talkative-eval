@@ -122,5 +122,5 @@ else:
         # session state.
         with st.chat_message("assistant"):
             response = st.write_stream(response_generator(response = unada_bot_response))
-            response = st.write_stream(response_generator(response = ada_response))
+            # response = st.write_stream(response_generator(response = ada_response))
         st.session_state.messages.append({"role": "assistant", "content": unada_bot_response})
