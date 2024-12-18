@@ -39,7 +39,7 @@ style_id = 0
 # target_style = st.selectbox('Choose a communication st:', styles)
 
 # Display the selected option
-# st.write(f'You selected: {target_style}')
+st.write("*After at least 10 responses from the therapist, you may enter 'save' or 'exit' to save the conversation.*")
 
 # Retrieve api key from secrets
 openai_api_key = st.secrets["OPENAI_API_KEY"]
